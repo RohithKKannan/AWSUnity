@@ -15,17 +15,19 @@ export const handler = async (event) => {
   let response;
   switch (true) {
     case event.httpMethod === "GET" && event.path === healthPath:
+      response = util.buildResponse(200);
+      break;
+    case event.httpMethod === "POST" && event.path === registerPath:
       const registerBody = JSON.parse(event);
       response = await registerService.register(registerBody);
       break;
-    case event.httpMethod === "POST" && event.path === registerPath:
-      response = util.buildResponse(200);
-      break;
     case event.httpMethod === "POST" && event.path === loginPath:
-      response = util.buildResponse(200);
+      const loginBody = JSON.parse(event);
+      response = await loginService.login(loginBody);
       break;
     case event.httpMethod === "POST" && event.path === verifyPath:
-      response = util.buildResponse(200);
+      const verifyBody = JSON.parse(event);
+      response = await verifyService.verify(verifyBody);
       break;
     default:
       response = util.buildResponse(403, "403 Not Found");
