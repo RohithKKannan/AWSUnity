@@ -1,5 +1,11 @@
 const util = require("./utils/util");
 
+//Services
+const registerService = require("./services/register");
+const loginService = require("./services/login");
+const verifyService = require("./services/verify");
+
+//Paths
 const healthPath = "/health";
 const registerPath = "/register";
 const loginPath = "/login";
@@ -9,7 +15,8 @@ export const handler = async (event) => {
   let response;
   switch (true) {
     case event.httpMethod === "GET" && event.path === healthPath:
-      response = util.buildResponse(200);
+      const registerBody = JSON.parse(event);
+      response = await registerService.register(registerBody);
       break;
     case event.httpMethod === "POST" && event.path === registerPath:
       response = util.buildResponse(200);
