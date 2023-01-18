@@ -1,5 +1,5 @@
 {
-  "name": "login-backend",
+  "name": "newbackend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,7 @@
   "author": "Rohith",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1294.0",
+    "aws-sdk": "^2.1296.0",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.0"
   }

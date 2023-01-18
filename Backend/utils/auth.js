@@ -1,12 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-function generateToken(userinfo) {
-  if (!userinfo) {
+function generateToken(userInfo) {
+  if (!userInfo) {
     return null;
   }
-
-  // JWT_SECRET is the environment variable to be setup in AWS lambda
-  return jwt.sign(userinfo, process.env.JWT_SECRET, {
+  return jwt.sign(userInfo, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
 }
@@ -16,20 +14,20 @@ function verifyToken(username, token) {
     if (error) {
       return {
         verified: false,
-        message: "Invalid token",
+        message: "invalid token",
       };
     }
 
     if (response.username !== username) {
       return {
         verified: false,
-        message: "Invalid user",
+        message: "invalid user",
       };
     }
 
     return {
       verified: true,
-      message: "Verified",
+      message: "verified",
     };
   });
 }
