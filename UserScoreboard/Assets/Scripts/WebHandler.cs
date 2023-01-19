@@ -35,12 +35,20 @@ public class WebHandler : MonoBehaviour
         username: username,
         password: password
     }
+    JSON object for register
+    {
+        name: name,
+        email: email,
+        username: username,
+        password: password
+    }
+    
     */
 
     [ContextMenu("Check Health")]
     public async void CheckHealth()
     {
-        string url = "https://j8hx3vl9p8.execute-api.ap-south-1.amazonaws.com/prod/health";
+        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/verify";
 
         UnityWebRequest www = UnityWebRequest.Get(url);
 
@@ -71,7 +79,7 @@ public class WebHandler : MonoBehaviour
     [ContextMenu("Login User")]
     public async void LoginUser()
     {
-        string url = "https://j8hx3vl9p8.execute-api.ap-south-1.amazonaws.com/prod/login";
+        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/login";
 
         if (login_username.text == "" || login_password.text == "")
         {
@@ -176,7 +184,7 @@ public class WebHandler : MonoBehaviour
     [ContextMenu("Register User")]
     public async void RegisterUser()
     {
-        string url = "https://j8hx3vl9p8.execute-api.ap-south-1.amazonaws.com/prod/login";
+        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/register";
 
         if (register_name.text == "" || register_email.text == "" || register_username.text == "" || register_password.text == "")
         {
