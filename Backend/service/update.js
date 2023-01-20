@@ -9,10 +9,10 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userTable = "User_Data";
 
 async function update(requestBody) {
-  const username = requestBody.user.username;
+  const username = requestBody.username;
   const token = requestBody.token;
-  const score = requestBody.user.score;
-  if (!username || !token) {
+  const score = requestBody.score;
+  if (!username || !token || !score) {
     return util.buildResponse(401, {
       message: "Invalid input for request",
     });
@@ -22,7 +22,7 @@ async function update(requestBody) {
     return util.buildResponse(401, verification);
   }
 
-  const updateResponse = setScore(username, score);
+  const updateResponse = await setScore(username, score);
   if (!updateResponse) {
     return util.buildResponse(403, {
       message: "There is no update from user",
@@ -31,25 +31,28 @@ async function update(requestBody) {
 
   return util.buildResponse(200, {
     message: "update success",
+    username: updateResponse.username,
   });
 }
 
 async function setScore(username, score) {
+  console.log("Key Username : ", username);
+  console.log("New Score : ", score);
   const params = {
     TableName: userTable,
     Key: {
       username: username,
     },
-    UpdateExpression: "set #MyVariable = :y",
+    UpdateExpression: "SET #S = :y",
     ExpressionAttributeNames: {
-      "#MyVariable": "score",
+      "#S": "score",
     },
     ExpressionAttributeValues: {
       ":y": score,
     },
   };
   return await dynamodb
-    .put(params)
+    .update(params)
     .promise()
     .then(
       () => {
