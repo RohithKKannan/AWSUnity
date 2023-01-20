@@ -25,9 +25,12 @@ public class WebHandler : MonoBehaviour
     [SerializeField] TMP_InputField login_password;
     [SerializeField] TMP_Text login_warning;
     [SerializeField] TMP_Text login_status;
-    [Header("Welcome Text")]
+    [Header("Profile Panel")]
     [SerializeField] TMP_Text welcome;
     [SerializeField] TMP_Text score;
+    [SerializeField] TMP_InputField new_score;
+    [SerializeField] TMP_Text update_warning;
+    [SerializeField] TMP_Text update_status;
 
     /*
     JSON object for login
@@ -168,19 +171,29 @@ public class WebHandler : MonoBehaviour
         //Create User Data class with member variables names same as that of json object
     }
 
-    public void ProfileView()
+    void ProfileView()
     {
         welcome.text = $"Hi {UserData.username}! Welcome back";
+        score.text = "Your score is : " + UserData.score;
         registerPanel.gameObject.SetActive(false);
         loginPanel.gameObject.SetActive(false);
         profilePanel.gameObject.SetActive(true);
     }
 
-    public void LoginView()
+    void LoginView()
     {
         registerPanel.gameObject.SetActive(true);
         loginPanel.gameObject.SetActive(true);
         profilePanel.gameObject.SetActive(false);
+    }
+
+    public void LogoutUser()
+    {
+        UserData.username = "";
+        UserData.name = "";
+        UserData.score = 0;
+        UserData.token = "";
+        LoginView();
     }
 
     [ContextMenu("Register User")]
@@ -244,6 +257,68 @@ public class WebHandler : MonoBehaviour
                 register_warning.gameObject.SetActive(true);
             if (register_status.gameObject.activeInHierarchy)
                 register_status.gameObject.SetActive(false);
+            return;
+        }
+    }
+
+    public async void updateScore()
+    {
+        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/update";
+
+        if (new_score.text == "" || !int.TryParse(new_score.text, out int n))
+        {
+            update_warning.text = "Enter a valid score to update!";
+            if (!update_warning.gameObject.activeInHierarchy)
+                update_warning.gameObject.SetActive(true);
+            if (update_status.gameObject.activeInHierarchy)
+                update_status.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (update_warning.gameObject.activeInHierarchy)
+                update_warning.gameObject.SetActive(false);
+        }
+
+        UpdateData updateData = new UpdateData();
+        updateData.username = UserData.username;
+        updateData.score = int.Parse(new_score.text);
+        updateData.token = UserData.token;
+
+        var body = JsonConvert.SerializeObject(updateData);
+
+        UnityWebRequest www = UnityWebRequest.Put(url, body);
+
+        www.method = "PUT";
+
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("x-api-key", "U9a559ywOva6diEIthuCc5LYdEvxY49P6bYhmrwF");
+
+        var operation = www.SendWebRequest();
+
+        while (!operation.isDone)
+            await Task.Yield();
+
+        var jsonResponse = www.downloadHandler.text;
+
+        if (www.result != UnityWebRequest.Result.Success)
+            Debug.LogError($"Failure : {www.error}");
+
+        try
+        {
+            update_status.text = "Update successfull!";
+            if (!update_status.gameObject.activeInHierarchy)
+                update_status.gameObject.SetActive(true);
+            Debug.Log("Success");
+        }
+        catch (Exception e)
+        {
+            var result = JsonConvert.DeserializeObject<ExceptionResponse>(jsonResponse);
+            Debug.LogError($"Could not parse response {result.message}. {e.Message}");
+            update_warning.text = result.message;
+            if (!update_warning.gameObject.activeInHierarchy)
+                update_warning.gameObject.SetActive(true);
+            if (update_status.gameObject.activeInHierarchy)
+                update_status.gameObject.SetActive(false);
             return;
         }
     }

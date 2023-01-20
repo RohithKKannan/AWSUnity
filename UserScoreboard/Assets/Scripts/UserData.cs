@@ -41,3 +41,10 @@ public class ExceptionResponse
 {
     public string message { get; set; }
 }
+
+public class UpdateData
+{
+    public string username { get; set; }
+    public int score { get; set; }
+    public string token { get; set; }
+}
