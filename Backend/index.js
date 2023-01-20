@@ -1,6 +1,7 @@
 const registerService = require("./service/register");
 const loginService = require("./service/login");
 const verifyService = require("./service/verify");
+const updateService = require("./service/update");
 const util = require("./utils/util");
 
 const healthPath = "/health";
@@ -27,6 +28,9 @@ exports.handler = async (event) => {
       const verifyBody = JSON.parse(event.body);
       response = verifyService.verify(verifyBody);
       break;
+    case event.httpMethod === "PUT" && event.path === updatePath:
+      const updateBody = JSON.parse(event.body);
+      response = updateService.update(updateBody);
     default:
       response = util.buildResponse(404, "404 Not Found!");
   }

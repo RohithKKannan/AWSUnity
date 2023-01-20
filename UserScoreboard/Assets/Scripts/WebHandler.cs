@@ -148,6 +148,8 @@ public class WebHandler : MonoBehaviour
             // Debug.Log($"Success: {www.downloadHandler.text}");
             login_status.text = result.user.username;
             UserData.username = result.user.username;
+            UserData.name = result.user.name;
+            UserData.token = result.token;
             if (!login_status.gameObject.activeInHierarchy)
                 login_status.gameObject.SetActive(true);
             ProfileView();
