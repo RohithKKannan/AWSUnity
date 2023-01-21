@@ -1,7 +1,9 @@
 public static class UserData
 {
     public static string username { get; set; }
+    public static string name { get; set; }
     public static int score { get; set; }
+    public static string token { get; set; }
 }
 
 public class LoginData
@@ -38,4 +40,11 @@ public class RegisterResponse
 public class ExceptionResponse
 {
     public string message { get; set; }
+}
+
+public class UpdateData
+{
+    public string username { get; set; }
+    public int score { get; set; }
+    public string token { get; set; }
 }

@@ -51,6 +51,7 @@ async function getUser(username) {
     .promise()
     .then(
       (response) => {
+        console.log("Response received!", response.Item);
         return response.Item;
       },
       (error) => {
