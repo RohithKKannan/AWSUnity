@@ -24,6 +24,7 @@ public class UserInfo
 {
     public string username { get; set; }
     public string name { get; set; }
+    public int score { get; set; }
 }
 
 public class LoginResponse
@@ -47,4 +48,16 @@ public class UpdateData
     public string username { get; set; }
     public int score { get; set; }
     public string token { get; set; }
+}
+
+public class ScoreData
+{
+    public string username { get; set; }
+    public string token { get; set; }
+}
+
+public class ScoreResponse
+{
+    public string message { get; set; }
+    public int score { get; set; }
 }

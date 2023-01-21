@@ -2,12 +2,14 @@ const registerService = require("./service/register");
 const loginService = require("./service/login");
 const verifyService = require("./service/verify");
 const updateService = require("./service/update");
+const scoreService = require("./service/score");
 const util = require("./utils/util");
 
 const healthPath = "/health";
 const registerPath = "/register";
 const loginPath = "/login";
 const verifyPath = "/verify";
+const scorePath = "/score";
 const updatePath = "/update";
 
 exports.handler = async (event) => {
@@ -37,6 +39,11 @@ exports.handler = async (event) => {
       console.log("updateEvent");
       const updateBody = JSON.parse(event.body);
       response = updateService.update(updateBody);
+      break;
+    case event.httpMethod === "POST" && event.path === scorePath:
+      console.log("scoreEvent");
+      const scoreBody = JSON.parse(event.body);
+      response = scoreService.score(scoreBody);
       break;
     default:
       console.log("nullEvent");
