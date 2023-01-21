@@ -186,6 +186,9 @@ public class WebHandler : MonoBehaviour
 
     void ProfileView()
     {
+        ClearProfileTexts();
+        ClearLoginFields();
+        ClearStatusTexts();
         welcome.text = $"Hi {UserData.username}! Welcome back";
         score.text = "Your score is : " + UserData.score;
         registerPanel.gameObject.SetActive(false);
@@ -193,10 +196,18 @@ public class WebHandler : MonoBehaviour
         profilePanel.gameObject.SetActive(true);
     }
 
+    void ClearProfileTexts()
+    {
+        if (score_warning.gameObject.activeInHierarchy)
+            score_warning.gameObject.SetActive(false);
+        if (update_status.gameObject.activeInHierarchy)
+            update_status.gameObject.SetActive(false);
+        if (update_warning.gameObject.activeInHierarchy)
+            update_warning.gameObject.SetActive(false);
+    }
+
     void LoginView()
     {
-        ClearStatusTexts();
-        ClearLoginFields();
         ClearRegisterFields();
         registerPanel.gameObject.SetActive(true);
         loginPanel.gameObject.SetActive(true);
