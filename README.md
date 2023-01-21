@@ -2,16 +2,15 @@
  AWS DynamoDB with Serverless backend integration in Unity
  
 ### Backend for AWS Lambda
- NodeJS backend system for AWS Lambda  <br>
+ NodeJS backend system for AWS Lambda  <br> <br>
  Made using reference from this youtube video https://youtu.be/mgkgQtMplPY by Felix Yu  <br>
-
- Make use of the AWSUnityIntegration.pdf file to get started with setting up your databse and backend on AWS
+ Make use of the AWSUnityIntegration.pdf file to get started with setting up your databse and serverless backend on AWS. You should have logged into AWS console to make use of the many different services.
 
 ### UserScoreboard Unity Project
  A simple Unity project with simple UI register, login and profile panels  <br>
  Also has the WebHandler script which sends respective UnityWebRequests to obtain data from DynamoDB
 
-## Update
+## Update v1.1
  Added two new endpoints  <br>
 	1. Update <br>
 	2. Score <br>

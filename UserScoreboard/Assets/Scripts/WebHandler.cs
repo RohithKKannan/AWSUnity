@@ -5,7 +5,8 @@ using UnityEngine.Networking;
 using Newtonsoft.Json;
 using TMPro;
 
-//Newtonsoft json : com.unity.nuget.newtonsoft-json@3.0
+// Newtonsoft json : com.unity.nuget.newtonsoft-json@3.0
+// Make sure to update the invoke urls and API keys
 
 public class WebHandler : MonoBehaviour
 {
@@ -142,7 +143,7 @@ public class WebHandler : MonoBehaviour
         while (!operation.isDone)
             await Task.Yield();
 
-        /////////////////////////////////////////////////////////////////////////////////////////////// Response received
+        ///////////////////////////////////////////////Response received
 
         var jsonResponse = www.downloadHandler.text;
 
@@ -182,78 +183,6 @@ public class WebHandler : MonoBehaviour
             return;
         }
         //Create User Data class with member variables names same as that of json object
-    }
-
-    void ProfileView()
-    {
-        ClearProfileTexts();
-        ClearLoginFields();
-        ClearStatusTexts();
-        welcome.text = $"Hi {UserData.username}! Welcome back";
-        score.text = "Your score is : " + UserData.score;
-        registerPanel.gameObject.SetActive(false);
-        loginPanel.gameObject.SetActive(false);
-        profilePanel.gameObject.SetActive(true);
-    }
-
-    void ClearProfileTexts()
-    {
-        if (score_warning.gameObject.activeInHierarchy)
-            score_warning.gameObject.SetActive(false);
-        if (update_status.gameObject.activeInHierarchy)
-            update_status.gameObject.SetActive(false);
-        if (update_warning.gameObject.activeInHierarchy)
-            update_warning.gameObject.SetActive(false);
-    }
-
-    void LoginView()
-    {
-        ClearRegisterFields();
-        registerPanel.gameObject.SetActive(true);
-        loginPanel.gameObject.SetActive(true);
-        profilePanel.gameObject.SetActive(false);
-    }
-
-    void ClearStatusTexts()
-    {
-        if (login_status.gameObject.activeInHierarchy)
-            login_status.gameObject.SetActive(false);
-        if (login_warning.gameObject.activeInHierarchy)
-            login_warning.gameObject.SetActive(false);
-        if (register_status.gameObject.activeInHierarchy)
-            register_status.gameObject.SetActive(false);
-        if (register_warning.gameObject.activeInHierarchy)
-            register_warning.gameObject.SetActive(false);
-    }
-
-    void ClearLoginFields()
-    {
-        login_username.text = "";
-        login_password.text = "";
-    }
-
-    void ClearRegisterFields()
-    {
-        register_name.text = "";
-        register_email.text = "";
-        register_username.text = "";
-        register_password.text = "";
-    }
-
-    [ContextMenu("View User")]
-    void ViewUser()
-    {
-        Debug.Log(UserData.username);
-        Debug.Log(UserData.score);
-    }
-
-    public void LogoutUser()
-    {
-        UserData.username = "";
-        UserData.name = "";
-        UserData.score = 0;
-        UserData.token = "";
-        LoginView();
     }
 
     [ContextMenu("Register User")]
@@ -427,5 +356,83 @@ public class WebHandler : MonoBehaviour
                 score_warning.gameObject.SetActive(true);
             return;
         }
+    }
+
+    void ProfileView()
+    {
+        ClearRegisterFields();
+        ClearLoginFields();
+        ClearRegisterTexts();
+        welcome.text = $"Hi {UserData.username}! Welcome back";
+        score.text = "Your score is : " + UserData.score;
+        registerPanel.gameObject.SetActive(false);
+        loginPanel.gameObject.SetActive(false);
+        profilePanel.gameObject.SetActive(true);
+    }
+
+    void LoginView()
+    {
+        ClearProfileTexts();
+        ClearProfileFields();
+        registerPanel.gameObject.SetActive(true);
+        loginPanel.gameObject.SetActive(true);
+        profilePanel.gameObject.SetActive(false);
+    }
+
+    void ClearProfileTexts()
+    {
+        if (score_warning.gameObject.activeInHierarchy)
+            score_warning.gameObject.SetActive(false);
+        if (update_status.gameObject.activeInHierarchy)
+            update_status.gameObject.SetActive(false);
+        if (update_warning.gameObject.activeInHierarchy)
+            update_warning.gameObject.SetActive(false);
+    }
+
+    void ClearRegisterTexts()
+    {
+        if (login_status.gameObject.activeInHierarchy)
+            login_status.gameObject.SetActive(false);
+        if (login_warning.gameObject.activeInHierarchy)
+            login_warning.gameObject.SetActive(false);
+        if (register_status.gameObject.activeInHierarchy)
+            register_status.gameObject.SetActive(false);
+        if (register_warning.gameObject.activeInHierarchy)
+            register_warning.gameObject.SetActive(false);
+    }
+
+    void ClearLoginFields()
+    {
+        login_username.text = "";
+        login_password.text = "";
+    }
+
+    void ClearRegisterFields()
+    {
+        register_name.text = "";
+        register_email.text = "";
+        register_username.text = "";
+        register_password.text = "";
+    }
+
+    void ClearProfileFields()
+    {
+        new_score.text = "";
+    }
+
+    [ContextMenu("View User")]
+    void ViewUser()
+    {
+        Debug.Log(UserData.username);
+        Debug.Log(UserData.score);
+    }
+
+    public void LogoutUser()
+    {
+        UserData.username = "";
+        UserData.name = "";
+        UserData.score = 0;
+        UserData.token = "";
+        LoginView();
     }
 }

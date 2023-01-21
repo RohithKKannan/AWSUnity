@@ -70,13 +70,6 @@ async function saveUser(user) {
   const params = {
     TableName: userTable,
     Item: user,
-    /*
-    name: name,
-    email: email,
-    username: username.toLowerCase().trim(),
-    password: encryptedPW,
-    */
-    // level1 : true
   };
   return await dynamodb
     .put(params)
