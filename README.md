@@ -10,6 +10,9 @@
  A simple Unity project with simple UI register, login and profile panels  <br>
  Also has the WebHandler script which sends respective UnityWebRequests to obtain data from DynamoDB
 
+### Demo
+https://user-images.githubusercontent.com/51419779/213867505-684ba47a-b078-42e9-9643-692e1a917334.mp4
+
 ## Update v1.1
  Added two new endpoints  <br>
 	1. Update <br>
