@@ -8,13 +8,17 @@ const auth = require("../utils/auth");
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userTable = "User_Data";
 
-async function login(user) {
+async function score(user) {
   const username = user.username;
-  const password = user.password;
-  if (!user || !username || !password) {
+  const token = user.token;
+  if (!username || !token) {
     return util.buildResponse(401, {
-      message: "username and password are required!",
+      message: "username and token required",
     });
+  }
+  const verification = auth.verifyToken(username, token);
+  if (!verification.verified) {
+    return util.buildResponse(401, verification);
   }
   const dynamoUser = await getUser(username);
   if (!dynamoUser || !dynamoUser.username) {
@@ -22,22 +26,10 @@ async function login(user) {
       message: "user does not exist",
     });
   }
-  if (!bcrypt.compareSync(password, dynamoUser.password)) {
-    return util.buildResponse(403, {
-      message: "password is incorrect",
-    });
-  }
-  const userInfo = {
-    username: dynamoUser.username,
-    name: dynamoUser.name,
+  return util.buildResponse(200, {
+    message: "Got score",
     score: dynamoUser.score,
-  };
-  const token = auth.generateToken(userInfo);
-  const response = {
-    user: userInfo,
-    token: token,
-  };
-  return util.buildResponse(200, response);
+  });
 }
 
 async function getUser(username) {
@@ -61,4 +53,4 @@ async function getUser(username) {
     );
 }
 
-module.exports.login = login;
+module.exports.score = score;

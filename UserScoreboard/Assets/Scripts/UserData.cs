@@ -1,7 +1,9 @@
 public static class UserData
 {
     public static string username { get; set; }
+    public static string name { get; set; }
     public static int score { get; set; }
+    public static string token { get; set; }
 }
 
 public class LoginData
@@ -22,6 +24,7 @@ public class UserInfo
 {
     public string username { get; set; }
     public string name { get; set; }
+    public int score { get; set; }
 }
 
 public class LoginResponse
@@ -38,4 +41,23 @@ public class RegisterResponse
 public class ExceptionResponse
 {
     public string message { get; set; }
+}
+
+public class UpdateData
+{
+    public string username { get; set; }
+    public int score { get; set; }
+    public string token { get; set; }
+}
+
+public class ScoreData
+{
+    public string username { get; set; }
+    public string token { get; set; }
+}
+
+public class ScoreResponse
+{
+    public string message { get; set; }
+    public int score { get; set; }
 }
