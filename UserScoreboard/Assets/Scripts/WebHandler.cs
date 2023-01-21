@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using TMPro;
 
 // Newtonsoft json : com.unity.nuget.newtonsoft-json@3.0
-// Make sure to update the invoke urls and API keys
+
 
 public class WebHandler : MonoBehaviour
 {
@@ -33,6 +33,10 @@ public class WebHandler : MonoBehaviour
     [SerializeField] TMP_Text update_warning;
     [SerializeField] TMP_Text update_status;
     [SerializeField] TMP_Text score_warning;
+
+    // Make sure to update the invoke urls and API keys
+    string InvokeUrl = "";
+    string API_KEY = "";
 
     /*
     JSON object for login
@@ -63,12 +67,12 @@ public class WebHandler : MonoBehaviour
     [ContextMenu("Check Health")]
     public async void CheckHealth()
     {
-        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/verify";
+        string url = InvokeUrl + "/health";
 
         UnityWebRequest www = UnityWebRequest.Get(url);
 
         www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("x-api-key", "U9a559ywOva6diEIthuCc5LYdEvxY49P6bYhmrwF");
+        www.SetRequestHeader("x-api-key", API_KEY);
 
         var operation = www.SendWebRequest();
 
@@ -94,7 +98,7 @@ public class WebHandler : MonoBehaviour
     [ContextMenu("Login User")]
     public async void LoginUser()
     {
-        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/login";
+        string url = InvokeUrl + "/login";
 
         if (login_username.text == "" || login_password.text == "")
         {
@@ -127,7 +131,7 @@ public class WebHandler : MonoBehaviour
         //set get / post method
 
         www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("x-api-key", "U9a559ywOva6diEIthuCc5LYdEvxY49P6bYhmrwF");
+        www.SetRequestHeader("x-api-key", API_KEY);
         //setting content type - let unity know that we are dealing with json response type
         //setting api key
 
@@ -186,7 +190,7 @@ public class WebHandler : MonoBehaviour
     [ContextMenu("Register User")]
     public async void RegisterUser()
     {
-        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/register";
+        string url = InvokeUrl + "/register";
 
         if (register_name.text == "" || register_email.text == "" || register_username.text == "" || register_password.text == "")
         {
@@ -215,7 +219,7 @@ public class WebHandler : MonoBehaviour
         www.method = "POST";
 
         www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("x-api-key", "U9a559ywOva6diEIthuCc5LYdEvxY49P6bYhmrwF");
+        www.SetRequestHeader("x-api-key", API_KEY);
 
         var operation = www.SendWebRequest();
 
@@ -254,7 +258,7 @@ public class WebHandler : MonoBehaviour
 
     public async void updateScore()
     {
-        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/update";
+        string url = InvokeUrl + "/update";
 
         if (new_score.text == "" || !int.TryParse(new_score.text, out int n))
         {
@@ -282,7 +286,7 @@ public class WebHandler : MonoBehaviour
         www.method = "PUT";
 
         www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("x-api-key", "U9a559ywOva6diEIthuCc5LYdEvxY49P6bYhmrwF");
+        www.SetRequestHeader("x-api-key", API_KEY);
 
         var operation = www.SendWebRequest();
 
@@ -316,7 +320,7 @@ public class WebHandler : MonoBehaviour
 
     public async void GetScore()
     {
-        string url = "https://d5wp9i5f63.execute-api.ap-south-1.amazonaws.com/prod/score";
+        string url = InvokeUrl + "/score";
 
         ScoreData scoreData = new ScoreData();
         scoreData.username = UserData.username;
@@ -328,7 +332,7 @@ public class WebHandler : MonoBehaviour
         www.method = "POST";
 
         www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("x-api-key", "U9a559ywOva6diEIthuCc5LYdEvxY49P6bYhmrwF");
+        www.SetRequestHeader("x-api-key", API_KEY);
         var operation = www.SendWebRequest();
 
         while (!operation.isDone)
