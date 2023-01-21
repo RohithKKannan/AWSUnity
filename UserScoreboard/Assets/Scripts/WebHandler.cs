@@ -158,28 +158,41 @@ public class WebHandler : MonoBehaviour
 
         try
         {
+            Debug.Log("Login Response : " + jsonResponse);
             var result = JsonConvert.DeserializeObject<LoginResponse>(jsonResponse);
+            Debug.Log("Post deserialize");
+            Debug.Log("Yo 0");
             // Debug.Log("Completed: " + result.user.username + '\n');
             // Debug.Log($"Success: {www.downloadHandler.text}");
+            Debug.Log("Yo 0.3");
             if (result.user.username != "")
                 login_status.text = "User login successful!";
+            if (!login_status.gameObject.activeInHierarchy)
+                login_status.gameObject.SetActive(true);
+            Debug.Log("Yo 0.7");
+            Debug.Log("Yo 1");
             UserData.username = result.user.username;
             UserData.name = result.user.name;
             UserData.score = result.user.score;
             UserData.token = result.token;
-            if (!login_status.gameObject.activeInHierarchy)
-                login_status.gameObject.SetActive(true);
+            Debug.Log("Yo 2");
+            Debug.Log("Yo 3");
             ProfileView();
+            Debug.Log("Yo 4");
         }
         catch (Exception e)
         {
+            Debug.Log(e.Message);
+            Debug.Log("Yo 5");
             var result = JsonConvert.DeserializeObject<ExceptionResponse>(jsonResponse);
             Debug.LogError($"Could not parse response {result.message}. {e.Message}");
+            Debug.Log("Yo 6");
             login_warning.text = result.message;
             if (!login_warning.gameObject.activeInHierarchy)
                 login_warning.gameObject.SetActive(true);
             if (login_status.gameObject.activeInHierarchy)
                 login_status.gameObject.SetActive(false);
+            Debug.Log("Yo 7");
             return;
         }
         //Create User Data class with member variables names same as that of json object
@@ -231,9 +244,11 @@ public class WebHandler : MonoBehaviour
 
         try
         {
-            var result = JsonConvert.DeserializeObject<RegisterResponse>(jsonResponse);
-            // Debug.Log($"Success: {www.downloadHandler.text}");
-            if (result.username != "")
+            // Deserialize settings for raising exception if members of RegisterResponse is missing in the jsonResponse
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.MissingMemberHandling = MissingMemberHandling.Error;
+            RegisterResponse response = JsonConvert.DeserializeObject<RegisterResponse>(jsonResponse, settings);
+            if (response.username != "")
                 register_status.text = "User registration successful!";
             ClearRegisterFields();
             if (!register_status.gameObject.activeInHierarchy)
@@ -241,9 +256,9 @@ public class WebHandler : MonoBehaviour
         }
         catch (Exception e)
         {
-            var result = JsonConvert.DeserializeObject<ExceptionResponse>(jsonResponse);
-            Debug.LogError($"Could not parse response {result.message}. {e.Message}");
-            register_warning.text = result.message;
+            var response = JsonConvert.DeserializeObject<ExceptionResponse>(jsonResponse);
+            Debug.LogError($"Could not parse response {response.message}. {e.Message}");
+            register_warning.text = response.message;
             if (!register_warning.gameObject.activeInHierarchy)
                 register_warning.gameObject.SetActive(true);
             if (register_status.gameObject.activeInHierarchy)
