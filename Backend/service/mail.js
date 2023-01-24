@@ -7,14 +7,14 @@ const bcrypt = require("bcryptjs");
 const auth = require("../utils/auth");
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const userTable = "User_Data";
-const amazonSes = new AWS.SES.DocumentClient();
+const amazonSes = new AWS.SES({ region: "ap-south-1" });
 
 async function mail(requestBody) {
-  const username = requestBody.username;
-  const token = requestBody.token;
   const to = requestBody.to;
+  const subject = requestBody.subject;
   const body = requestBody.body;
-  if (!username || !token || !to || !body) {
+  const username = requestBody.username;
+  if (!username || !to || !body) {
     return util.buildResponse(401, {
       message: "Missing fields!",
     });
@@ -25,20 +25,34 @@ async function mail(requestBody) {
       message: "user does not exist",
     });
   }
-  if (!bcrypt.compareSync(password, dynamoUser.password)) {
-    return util.buildResponse(403, {
-      message: "password is incorrect",
+  const params = {
+    Source: "hithu203@gmail.com",
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Body: {
+        Text: {
+          Data: body,
+        },
+      },
+      Subject: {
+        Data: subject,
+      },
+    },
+  };
+  try {
+    const result = await amazonSes.sendEmail(params).promise();
+    console.log(result);
+    return util.buildResponse(200, {
+      message: "Email sent successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return util.buildResponse(500, {
+      message: "Please enter verified email address",
     });
   }
-
-  const sendMailResponse = await sendMail(user);
-  if (!sendMailResponse) {
-    return util.buildResponse(503, {
-      message: "Server error.",
-    });
-  }
-
-  return util.buildResponse(200, response);
 }
 
 async function getUser(username) {
